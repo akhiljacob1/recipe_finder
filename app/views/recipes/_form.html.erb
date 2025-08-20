@@ -47,6 +47,14 @@
   </div>
 
   <div>
+    <%= form.label :ingredients, style: "display: block" %>
+    <%= form.text_area :ingredients, placeholder: "Enter ingredients, one per line", 
+                       value: (recipe.ingredients&.join("\n") if recipe.ingredients), 
+                       style: "height: 100px;" %>
+    <small>Enter each ingredient on a separate line</small>
+  </div>
+
+  <div>
     <%= form.submit %>
   </div>
 <% end %>
