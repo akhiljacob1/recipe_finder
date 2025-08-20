@@ -4,6 +4,25 @@
 
 <h1>Recipes</h1>
 
+<%= form_with url: recipes_path, method: :get, local: true do |form| %>
+  <%= form.label :ingredients, "What ingredients do you have?" %>
+  <%= form.text_field :ingredients, 
+                      value: @search_query,
+                      placeholder: "e.g., eggs, flour, chocolate" %>
+  <small>'Enter ingredients separated by commas'</small>
+  <div>
+    <%= form.submit "Find Recipes" %>
+    <% if @search_query.present? %>
+      <%= link_to "Show All Recipes", recipes_path %>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @search_query.present? %>
+  <p><strong>Showing recipes that match:</strong> <%= @search_query %></p>
+  <p><em>Found <%= @recipes.count %> matching recipes</em></p>
+<% end %>
+
 <div id="recipes">
   <% @recipes.each do |recipe| %>
     <%= render recipe %>
