@@ -34,4 +34,17 @@
     <%= recipe.image_url %>
   </p>
 
+  <p>
+    <strong>Ingredients:</strong>
+    <% if recipe.ingredients&.any? %>
+      <ul>
+        <% recipe.ingredients.each do |ingredient| %>
+          <li><%= ingredient %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <em>No ingredients listed</em>
+    <% end %>
+  </p>
+
 </div>
