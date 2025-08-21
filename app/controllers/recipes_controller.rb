@@ -3,9 +3,11 @@ class RecipesController < ApplicationController
 
   # GET /recipes or /recipes.json
   def index
-    if params[:ingredients].present?
-      @recipes = Recipe.search_by_ingredients(params[:ingredients])
-      @search_query = params[:ingredients]
+    @search_query = params[:ingredients]
+    @max_time = params[:max_time]
+    
+    if @search_query.present? || @max_time.present?
+      @recipes = Recipe.search_by_ingredients_and_time(@search_query, @max_time)
     else
       @recipes = Recipe.all
     end

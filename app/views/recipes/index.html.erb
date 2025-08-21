@@ -5,21 +5,33 @@
 <h1>Recipes</h1>
 
 <%= form_with url: recipes_path, method: :get, local: true do |form| %>
-  <%= form.label :ingredients, "What ingredients do you have?" %>
-  <%= form.text_field :ingredients, 
-                      value: @search_query,
-                      placeholder: "e.g., eggs, flour, chocolate" %>
-  <small>'Enter ingredients separated by commas'</small>
+  <div>
+    <%= form.label :ingredients, "What ingredients do you have?" %>
+    <%= form.text_field :ingredients, 
+                        value: @search_query,
+                        placeholder: "e.g., eggs, flour, chocolate" %>
+    <small>Enter ingredients separated by commas</small>
+  </div>
+  
+  <div>
+    <%= form.label :max_time, "Maximum total time (minutes):" %>
+    <%= form.number_field :max_time, 
+                          value: @max_time,
+                          placeholder: "e.g., 30, 60, 120",
+                          min: 1,
+                          step: 1 %>
+    <small>Leave blank for no time limit</small>
+  </div>
+  
   <div>
     <%= form.submit "Find Recipes" %>
-    <% if @search_query.present? %>
+    <% if @search_query.present? || @max_time.present? %>
       <%= link_to "Show All Recipes", recipes_path %>
     <% end %>
   </div>
 <% end %>
 
-<% if @search_query.present? %>
-  <p><strong>Showing recipes that match:</strong> <%= @search_query %></p>
+<% if @search_query.present? || @max_time.present? %>
   <p><em>Found <%= @recipes.count %> matching recipes</em></p>
 <% end %>
 

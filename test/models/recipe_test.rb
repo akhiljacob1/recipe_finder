@@ -63,4 +63,11 @@ class RecipeTest < ActiveSupport::TestCase
       assert ingredient.length > 0
     end
   end
+
+  test "search_by_ingredients_and_time delegates to RecipeSearchService with time" do
+    results = Recipe.search_by_ingredients_and_time("eggs", 30)
+    
+    # Should return an array (basic delegation test)
+    assert results.is_a?(Array)
+  end
 end
