@@ -1,10 +1,83 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, @recipe.title %>
 
-<%= render @recipe %>
+<div class="min-h-screen bg-stone-100 py-8">
+  <div class="container mx-auto px-4">
+    <!-- Back Button -->
+    <div class="mb-6">
+      <%= link_to recipes_path, class: "inline-flex items-center text-stone-600 hover:text-stone-800 transition-colors" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        Back to Recipes
+      <% end %>
+    </div>
 
-<div>
-  <%= link_to "Edit this recipe", edit_recipe_path(@recipe) %> |
-  <%= link_to "Back to recipes", recipes_path %>
+    <!-- Recipe Card -->
+    <div class="max-w-4xl mx-auto">
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+        <!-- Recipe Header with Image -->
+        <div class="relative h-80 bg-gradient-to-br from-orange-100 to-red-100">
+          <% if @recipe.image_url.present? %>
+            <%= image_tag @recipe.image_url, class: "w-full h-full object-cover", alt: @recipe.title %>
+          <% else %>
+            <div class="flex items-center justify-center h-full">
+              <div class="text-center text-stone-400">
+                <svg class="w-24 h-24 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+                </svg>
+                <p class="text-lg">No Image Available</p>
+              </div>
+            </div>
+          <% end %>
+          
+          <!-- Recipe Title Overlay -->
+          <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+            <h1 class="text-3xl font-bold text-white mb-2"><%= @recipe.title %></h1>
+            <div class="flex items-center gap-4 text-white/90">
+              <span class="flex items-center gap-2">
+                <%= @recipe.category %>
+              </span>
+            </div>
+          </div>
+        </div>
 
-  <%= button_to "Destroy this recipe", @recipe, method: :delete %>
+        <!-- Recipe Details -->
+        <div class="p-8">
+          <!-- Time and Rating Info -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="text-center p-4 bg-orange-50 rounded-lg">
+              <div class="text-2xl font-bold text-orange-600"><%= @recipe.prep_time %> min</div>
+              <div class="text-sm text-stone-600">Time to prep</div>
+            </div>
+            <div class="text-center p-4 bg-red-50 rounded-lg">
+              <div class="text-2xl font-bold text-red-600"><%= @recipe.cook_time %> min</div>
+              <div class="text-sm text-stone-600">Time to cook</div>
+            </div>
+            <div class="text-center p-4 bg-blue-50 rounded-lg">
+              <div class="text-2xl font-bold text-blue-600"><%= @recipe.total_time %> min</div>
+              <div class="text-sm text-stone-600">Total Time</div>
+            </div>
+          </div>
+
+          <!-- Ingredients -->
+          <div class="mb-8">
+            <h2 class="text-2xl font-bold text-stone-900 mb-4 flex items-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-orange-500">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 6.75h4M3.375 6.75h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+              </svg>
+              Ingredients
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <% @recipe.ingredients.each do |ingredient| %>
+                <div class="flex items-center gap-3 p-3 bg-stone-50 rounded-lg">
+                  <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                  <span class="text-stone-700"><%= ingredient %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
