@@ -1,10 +1,11 @@
 class RecipeImportService
-  attr_reader :file_path, :imported_count, :failed_count, :errors
+  attr_reader :file_path, :imported_count, :failed_count, :skipped_count, :errors
 
   def initialize(file_path = nil)
     @file_path = file_path || Rails.root.join('recipes-en.json')
     @imported_count = 0
     @failed_count = 0
+    @skipped_count = 0
     @errors = []
   end
 
@@ -58,10 +59,22 @@ class RecipeImportService
   end
 
   def import_single_recipe(recipe_data, index)
+    cook_time = recipe_data['cook_time'] || 0
+    prep_time = recipe_data['prep_time'] || 0
+    total_time = cook_time + prep_time
+    
+    # Skip recipes with no time information (data cleaning)
+    if total_time <= 0
+      @skipped_count += 1
+      puts "#{index + 1}. Skipped (no time data): #{recipe_data['title']}"
+      return
+    end
+    
     recipe = Recipe.create!(
       title: recipe_data['title'],
-      cook_time: recipe_data['cook_time'],
-      prep_time: recipe_data['prep_time'],
+      cook_time: cook_time,
+      prep_time: prep_time,
+      total_time: total_time,
       ratings: recipe_data['ratings'],
       category: recipe_data['category'],
       author: recipe_data['author'],
@@ -82,6 +95,7 @@ class RecipeImportService
   def log_import_summary
     puts "\nImport completed!"
     puts "Successfully imported: #{@imported_count} recipes"
+    puts "Skipped (no time data): #{@skipped_count} recipes" if @skipped_count > 0
     puts "Failed imports: #{@failed_count} recipes" if @failed_count > 0
     puts "Total recipes in database: #{Recipe.count}"
   end
