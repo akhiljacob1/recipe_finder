@@ -1,15 +1,29 @@
 class RecipeSearchService
-  attr_reader :user_ingredients, :results
+  attr_reader :user_ingredients, :max_time, :results
 
-  def initialize(ingredient_string)
+  def initialize(ingredient_string, max_time = nil)
     @user_ingredients = parse_ingredients(ingredient_string)
+    @max_time = max_time.to_i if max_time.present?
     @results = []
   end
 
   def call(limit: 5)
-    return [] if @user_ingredients.empty?
+    # Start with base recipe scope
+    recipes_scope = Recipe.all
     
-    recipes_with_scores = Recipe.all.map do |recipe|
+    # Apply time filter if specified
+    if @max_time.present?
+      recipes_scope = recipes_scope.where("total_time <= ?", @max_time)
+    end
+    
+    # If no ingredient search, return time-filtered results
+    if @user_ingredients.empty?
+      @results = recipes_scope.limit(limit)
+      return @results
+    end
+    
+    # Apply ingredient scoring to time-filtered recipes
+    recipes_with_scores = recipes_scope.map do |recipe|
       score = calculate_match_score(recipe)
       { recipe: recipe, score: score }
     end
