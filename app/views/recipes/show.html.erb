@@ -69,8 +69,9 @@
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
               <% @recipe.ingredients.each do |ingredient| %>
-                <div class="flex items-center gap-3 p-3 bg-stone-50 rounded-lg">
-                  <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                <% classes = ingredient_highlight_classes(ingredient, params[:ingredients]) %>
+                <div class="flex items-center gap-3 p-3 <%= classes[:background] %> rounded-lg">
+                  <div class="w-2 h-2 <%= classes[:dot] %> rounded-full"></div>
                   <span class="text-stone-700"><%= ingredient %></span>
                 </div>
               <% end %>
