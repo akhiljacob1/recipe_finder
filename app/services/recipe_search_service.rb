@@ -51,8 +51,16 @@ class RecipeSearchService
       end
     end
     
-    # Calculate score as percentage of user ingredients matched
-    # This prioritizes recipes that match more of what the user has
-    (matches.to_f / @user_ingredients.length * 100).round(2)
+    return 0 if matches == 0
+    
+    # Calculate weighted score: recipe efficiency (70%) + user coverage (30%)
+    # This prioritizes recipes with fewer extra ingredients while still favoring
+    # recipes that use more of what the user has available
+    user_coverage = matches.to_f / @user_ingredients.length
+    recipe_efficiency = matches.to_f / recipe_ingredients.length
+    
+    # Weighted score: recipe efficiency is primary factor
+    score = (recipe_efficiency ** 0.7) * (user_coverage ** 0.3) * 100
+    score.round(2)
   end
 end
