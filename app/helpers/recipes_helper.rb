@@ -1,4 +1,6 @@
 module RecipesHelper
+  # Highlights ingredients that match the search query
+
   def ingredient_matches_search?(ingredient, search_query)
     return nil if search_query.blank?
     
