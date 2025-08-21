@@ -1,19 +1,61 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  title: MyString
-  cook_time: 1
-  prep_time: 1
-  ratings: 1.5
-  category: MyString
-  author: MyString
-  image_url: MyString
+pasta_carbonara:
+  title: "Classic Pasta Carbonara"
+  cook_time: 15
+  prep_time: 10
+  ratings: 4.5
+  category: "Italian"
+  author: "Chef Mario"
+  image_url: "carbonara.jpg"
+  ingredients: ["pasta", "eggs", "bacon", "parmesan cheese", "black pepper"]
 
-two:
-  title: MyString
-  cook_time: 1
-  prep_time: 1
-  ratings: 1.5
-  category: MyString
-  author: MyString
-  image_url: MyString
+chocolate_chip_cookies:
+  title: "Chocolate Chip Cookies"
+  cook_time: 12
+  prep_time: 15
+  ratings: 4.8
+  category: "Dessert"
+  author: "Baker Jane"
+  image_url: "cookies.jpg"
+  ingredients: ["flour", "butter", "sugar", "eggs", "chocolate chips", "vanilla extract"]
+
+chicken_stir_fry:
+  title: "Quick Chicken Stir Fry"
+  cook_time: 10
+  prep_time: 15
+  ratings: 4.2
+  category: "Asian"
+  author: "Chef Wong"
+  image_url: "stirfry.jpg"
+  ingredients: ["chicken breast", "soy sauce", "garlic", "ginger", "vegetables", "rice"]
+
+tomato_soup:
+  title: "Creamy Tomato Soup"
+  cook_time: 20
+  prep_time: 10
+  ratings: 4.0
+  category: "Soup"
+  author: "Chef Anna"
+  image_url: "soup.jpg"
+  ingredients: ["tomatoes", "cream", "onion", "garlic", "basil", "vegetable broth"]
+
+pancakes:
+  title: "Fluffy Pancakes"
+  cook_time: 15
+  prep_time: 5
+  ratings: 4.7
+  category: "Breakfast"
+  author: "Mom's Recipe"
+  image_url: "pancakes.jpg"
+  ingredients: ["flour", "milk", "eggs", "sugar", "baking powder", "butter"]
+
+beef_tacos:
+  title: "Spicy Beef Tacos"
+  cook_time: 20
+  prep_time: 15
+  ratings: 4.4
+  category: "Mexican"
+  author: "Chef Carlos"
+  image_url: "tacos.jpg"
+  ingredients: ["ground beef", "taco shells", "cheese", "lettuce", "tomatoes", "onion", "hot sauce"]
