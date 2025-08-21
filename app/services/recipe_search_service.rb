@@ -22,18 +22,31 @@ class RecipeSearchService
       return @results
     end
     
-    # Apply ingredient scoring to time-filtered recipes
-    recipes_with_scores = recipes_scope.map do |recipe|
+    # Get all recipes that match the time filter
+    time_filtered_recipes = recipes_scope.to_a
+    
+    # Apply ingredient scoring and filtering
+    recipes_with_scores = time_filtered_recipes.map do |recipe|
       score = calculate_match_score(recipe)
       { recipe: recipe, score: score }
     end
     
-    # Sort by score (descending) and take top results
-    @results = recipes_with_scores
-                 .select { |item| item[:score] > 0 }  # Only recipes with at least one match
-                 .sort_by { |item| -item[:score] }    # Sort by score descending
-                 .first(limit)
-                 .map { |item| item[:recipe] }
+    # Filter and sort by score
+    scored_recipes = recipes_with_scores
+                       .select { |item| item[:score] > 0 }  # Only recipes with at least one match
+                       .sort_by { |item| -item[:score] }    # Sort by score descending
+    
+    # Get the recipe IDs in the correct order
+    recipe_ids = scored_recipes.map { |item| item[:recipe].id }
+    
+    # Return an ActiveRecord::Relation with the correct order
+    if recipe_ids.any?
+      # Use the IDs to create a properly ordered relation
+      @results = Recipe.where(id: recipe_ids)
+                       .order(Arel.sql("position(id::text in '#{recipe_ids.join(',')}')"))
+    else
+      @results = Recipe.none
+    end
     
     @results
   end
