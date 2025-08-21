@@ -38,18 +38,17 @@
 
   <!-- Main Content -->
   <div class="container mx-auto px-4 py-8">
-    <!-- Search Results Summary -->
-    <% if @search_query.present? || @max_time.present? %>
-      <div class="mb-6">
-        <p class="text-stone-600 text-lg"><em>Found <%= @recipes.count %> matching recipes</em></p>
-      </div>
-    <% end %>
-
-    <!-- Recipe Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      <% @recipes.each do |recipe| %>
-        <%= render 'recipe', recipe: recipe %>
+    <div class="flex flex-col items-center gap-4">
+      <!-- Search Results Summary -->
+      <% if @search_query.present? || @max_time.present? %>
+        <p class="text-stone-400 text-lg"><em>Found <%= @recipes.count %> matching recipes</em></p>
       <% end %>
+      <!-- Recipe Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12">
+        <% @recipes.each do |recipe| %>
+          <%= render 'recipe', recipe: recipe %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
