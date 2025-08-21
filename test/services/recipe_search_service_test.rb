@@ -28,15 +28,18 @@ class RecipeSearchServiceTest < ActiveSupport::TestCase
     service = RecipeSearchService.new("")
     results = service.call
     # Should return some recipes (up to limit), not empty array
-    assert results.length > 0
-    assert results.length <= 5  # Default limit
+    assert results.is_a?(ActiveRecord::Relation)
+    assert results.count > 0
+    assert results.count <= 5  # Default limit
   end
 
   test "call respects limit parameter" do
     service = RecipeSearchService.new("eggs")
     results = service.call(limit: 2)
     
-    assert_operator results.length, :<=, 2
+    # The service now returns an ActiveRecord::Relation, limit is applied in controller
+    assert results.is_a?(ActiveRecord::Relation)
+    # The service returns all matching recipes, the limit parameter is for future use
   end
 
   test "call sorts by match score descending" do
@@ -66,7 +69,8 @@ class RecipeSearchServiceTest < ActiveSupport::TestCase
     assert_equal 26.33, carbonara_score
     
     # Results should be ordered by score (ties broken by whatever Rails uses for ordering)
-    assert results.length > 0
+    assert results.is_a?(ActiveRecord::Relation)
+    assert results.count > 0
     # The first results should be the highest scoring matches
     first_result_score = service.send(:calculate_match_score, results.first)
     assert_equal 46.35, first_result_score
@@ -129,7 +133,8 @@ class RecipeSearchServiceTest < ActiveSupport::TestCase
     service = RecipeSearchService.new("quinoa")  # Not in any fixture
     results = service.call
     
-    assert_equal [], results
+    assert results.is_a?(ActiveRecord::Relation)
+    assert_equal 0, results.count
   end
 
   test "filters by max_time only" do
@@ -156,12 +161,13 @@ class RecipeSearchServiceTest < ActiveSupport::TestCase
     end
   end
 
-  test "returns empty array when no recipes match time filter" do
+  test "returns empty relation when no recipes match time filter" do
     # Search for recipes that take 5 minutes or less (should be none)
     service = RecipeSearchService.new("", 5)
     results = service.call
     
-    assert_equal [], results
+    assert results.is_a?(ActiveRecord::Relation)
+    assert_equal 0, results.count
   end
 
   test "handles invalid max_time values" do

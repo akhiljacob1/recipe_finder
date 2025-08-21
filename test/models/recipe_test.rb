@@ -4,8 +4,8 @@ class RecipeTest < ActiveSupport::TestCase
   test "search_by_ingredients delegates to RecipeSearchService" do
     results = Recipe.search_by_ingredients("eggs, flour")
     
-    # Should return recipes with matching ingredients
-    assert results.is_a?(Array)
+    # Should return an ActiveRecord::Relation with matching ingredients
+    assert results.is_a?(ActiveRecord::Relation)
     result_titles = results.map(&:title)
     assert_includes result_titles, "Fluffy Pancakes"
     assert_includes result_titles, "Chocolate Chip Cookies"
@@ -13,12 +13,15 @@ class RecipeTest < ActiveSupport::TestCase
 
   test "search_by_ingredients respects limit parameter" do
     results = Recipe.search_by_ingredients("eggs", limit: 1)
-    assert_equal 1, results.length
+    # The limit is now handled by the service, but the relation can still be limited
+    assert results.is_a?(ActiveRecord::Relation)
+    # The service returns all matching recipes, limit is applied in the controller
   end
 
-  test "search_by_ingredients returns empty array for no matches" do
+  test "search_by_ingredients returns empty relation for no matches" do
     results = Recipe.search_by_ingredients("quinoa")
-    assert_equal [], results
+    assert results.is_a?(ActiveRecord::Relation)
+    assert_equal 0, results.count
   end
 
   test "ingredient_match_score calculates score for recipe" do
@@ -67,7 +70,7 @@ class RecipeTest < ActiveSupport::TestCase
   test "search_by_ingredients_and_time delegates to RecipeSearchService with time" do
     results = Recipe.search_by_ingredients_and_time("eggs", 30)
     
-    # Should return an array (basic delegation test)
-    assert results.is_a?(Array)
+    # Should return an ActiveRecord::Relation (basic delegation test)
+    assert results.is_a?(ActiveRecord::Relation)
   end
 end

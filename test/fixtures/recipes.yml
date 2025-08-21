@@ -8,7 +8,7 @@ pasta_carbonara:
   ratings: 4.5
   category: "Italian"
   author: "Chef Mario"
-  image_url: "carbonara.jpg"
+  image_url: "https://example.com/carbonara.jpg"
   ingredients: ["pasta", "eggs", "bacon", "parmesan cheese", "black pepper"]
 
 chocolate_chip_cookies:
@@ -19,7 +19,7 @@ chocolate_chip_cookies:
   ratings: 4.8
   category: "Dessert"
   author: "Baker Jane"
-  image_url: "cookies.jpg"
+  image_url: "https://example.com/cookies.jpg"
   ingredients: ["flour", "butter", "sugar", "eggs", "chocolate chips", "vanilla extract"]
 
 chicken_stir_fry:
@@ -30,7 +30,7 @@ chicken_stir_fry:
   ratings: 4.2
   category: "Asian"
   author: "Chef Wong"
-  image_url: "stirfry.jpg"
+  image_url: "https://example.com/stirfry.jpg"
   ingredients: ["chicken breast", "soy sauce", "garlic", "ginger", "vegetables", "rice"]
 
 tomato_soup:
@@ -41,7 +41,7 @@ tomato_soup:
   ratings: 4.0
   category: "Soup"
   author: "Chef Anna"
-  image_url: "soup.jpg"
+  image_url: "https://example.com/soup.jpg"
   ingredients: ["tomatoes", "cream", "onion", "garlic", "basil", "vegetable broth"]
 
 pancakes:
@@ -52,7 +52,7 @@ pancakes:
   ratings: 4.7
   category: "Breakfast"
   author: "Mom's Recipe"
-  image_url: "pancakes.jpg"
+  image_url: "https://example.com/pancakes.jpg"
   ingredients: ["flour", "milk", "eggs", "sugar", "baking powder", "butter"]
 
 beef_tacos:
@@ -63,5 +63,5 @@ beef_tacos:
   ratings: 4.4
   category: "Mexican"
   author: "Chef Carlos"
-  image_url: "tacos.jpg"
+  image_url: "https://example.com/tacos.jpg"
   ingredients: ["ground beef", "taco shells", "cheese", "lettuce", "tomatoes", "onion", "hot sauce"]
