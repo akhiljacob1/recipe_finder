@@ -11,11 +11,10 @@ class RecipeTest < ActiveSupport::TestCase
     assert_includes result_titles, "Chocolate Chip Cookies"
   end
 
-  test "search_by_ingredients respects limit parameter" do
-    results = Recipe.search_by_ingredients("eggs", limit: 1)
-    # The limit is now handled by the service, but the relation can still be limited
+  test "search_by_ingredients returns all matching recipes" do
+    results = Recipe.search_by_ingredients("eggs")
     assert results.is_a?(ActiveRecord::Relation)
-    # The service returns all matching recipes, limit is applied in the controller
+    assert results.count > 0
   end
 
   test "search_by_ingredients returns empty relation for no matches" do

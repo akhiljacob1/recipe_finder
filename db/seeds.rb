@@ -12,8 +12,7 @@ else
   puts "Importing recipes from dataset..."
   
   service = RecipeImportService.new
-  result = service.call(count: 50)
-#   result = service.call
+  result = service.call
   
   if result
     puts "✅ Successfully imported #{service.imported_count} recipes!"

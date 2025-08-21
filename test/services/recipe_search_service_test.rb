@@ -24,22 +24,20 @@ class RecipeSearchServiceTest < ActiveSupport::TestCase
     assert_equal ["eggs", "flour", "butter"], service.user_ingredients
   end
 
-  test "call returns limited recipes for empty ingredients and no time filter" do
+  test "call returns all recipes for empty ingredients and no time filter" do
     service = RecipeSearchService.new("")
     results = service.call
-    # Should return some recipes (up to limit), not empty array
     assert results.is_a?(ActiveRecord::Relation)
     assert results.count > 0
-    assert results.count <= 5  # Default limit
   end
 
-  test "call respects limit parameter" do
+  test "call returns all matching recipes" do
     service = RecipeSearchService.new("eggs")
-    results = service.call(limit: 2)
+    results = service.call
     
-    # The service now returns an ActiveRecord::Relation, limit is applied in controller
+    # The service now returns an ActiveRecord::Relation with all matching recipes
     assert results.is_a?(ActiveRecord::Relation)
-    # The service returns all matching recipes, the limit parameter is for future use
+    assert results.count > 0
   end
 
   test "call sorts by match score descending" do
@@ -140,7 +138,7 @@ class RecipeSearchServiceTest < ActiveSupport::TestCase
   test "filters by max_time only" do
     # Find recipes that take 25 minutes or less
     service = RecipeSearchService.new("", 25)
-    results = service.call(limit: 10)
+    results = service.call
     
     # All results should have total_time <= 25
     results.each do |recipe|
@@ -151,7 +149,7 @@ class RecipeSearchServiceTest < ActiveSupport::TestCase
   test "combines ingredient search with time filter" do
     # Search for eggs with max 30 minutes
     service = RecipeSearchService.new("eggs", 30)
-    results = service.call(limit: 10)
+    results = service.call
     
     # All results should have total_time <= 30 and match eggs
     results.each do |recipe|

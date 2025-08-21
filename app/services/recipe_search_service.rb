@@ -7,7 +7,7 @@ class RecipeSearchService
     @results = []
   end
 
-  def call(limit: 5)
+  def call
     # Start with base recipe scope
     recipes_scope = Recipe.all
     
@@ -18,7 +18,7 @@ class RecipeSearchService
     
     # If no ingredient search, return time-filtered results
     if @user_ingredients.empty?
-      @results = recipes_scope.limit(limit)
+      @results = recipes_scope
       return @results
     end
     
