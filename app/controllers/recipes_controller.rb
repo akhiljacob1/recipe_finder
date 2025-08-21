@@ -17,14 +17,6 @@ class RecipesController < ApplicationController
     
     # Paginate results with 12 per page
     @pagy, @recipes = pagy(recipes, items: 12)
-    
-    # Calculate scores for each recipe if there's a search query
-    if @search_query.present?
-      @recipe_scores = {}
-      @recipes.each do |recipe|
-        @recipe_scores[recipe.id] = recipe.ingredient_match_score(@search_query)
-      end
-    end
   end
 
   # GET /recipes/1 or /recipes/1.json
