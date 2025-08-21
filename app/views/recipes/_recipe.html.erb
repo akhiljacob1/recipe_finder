@@ -1,4 +1,4 @@
-<%= link_to recipe, class: "w-min" do %>
+<%= link_to recipe_path(recipe, ingredients: @search_query), class: "w-min" do %>
   <div class="bg-white rounded-lg h-full w-64 overflow-hidden hover:shadow-lg transition-shadow duration-200">
     <!-- Recipe Image -->
     <div class="relative h-48 bg-gradient-to-br from-orange-100 to-red-100 flex items-center justify-center">
