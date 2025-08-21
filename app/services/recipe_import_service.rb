@@ -9,13 +9,13 @@ class RecipeImportService
     @errors = []
   end
 
-  def call(count: nil)
+  def call
     validate_file!
     
     recipes_data = load_recipes_data
-    recipes_to_import = count ? recipes_data.first(count) : recipes_data
+    recipes_to_import = recipes_data
     
-    log_dataset_info(recipes_data, count)
+    log_dataset_info(recipes_data)
     
     import_recipes(recipes_to_import)
     
@@ -43,13 +43,9 @@ class RecipeImportService
     raise "Invalid JSON format: #{e.message}"
   end
 
-  def log_dataset_info(recipes_data, count)
+  def log_dataset_info(recipes_data)
     puts "Found #{recipes_data.length} total recipes in dataset"
-    if count
-      puts "Importing first #{count} recipes..."
-    else
-      puts "Importing all #{recipes_data.length} recipes..."
-    end
+    puts "Importing all #{recipes_data.length} recipes..."
   end
 
   def import_recipes(recipes_to_import)

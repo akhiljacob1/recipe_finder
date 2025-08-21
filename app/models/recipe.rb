@@ -1,10 +1,10 @@
 class Recipe < ApplicationRecord
-  def self.search_by_ingredients(ingredient_string, limit: 5)
-    RecipeSearchService.new(ingredient_string).call(limit: limit)
+  def self.search_by_ingredients(ingredient_string)
+    RecipeSearchService.new(ingredient_string).call
   end
 
-  def self.search_by_ingredients_and_time(ingredient_string, max_time, limit: 50)
-    RecipeSearchService.new(ingredient_string, max_time).call(limit: limit)
+  def self.search_by_ingredients_and_time(ingredient_string, max_time)
+    RecipeSearchService.new(ingredient_string, max_time).call
   end
   
   def ingredient_match_score(user_ingredients_string)
