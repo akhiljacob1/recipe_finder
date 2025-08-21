@@ -7,10 +7,16 @@ class RecipesController < ApplicationController
     @max_time = params[:max_time]
     
     if @search_query.present? || @max_time.present?
-      @recipes = Recipe.search_by_ingredients_and_time(@search_query, @max_time)
+      recipes = Recipe.search_by_ingredients_and_time(@search_query, @max_time)
     else
-      @recipes = Recipe.all
+      recipes = Recipe.all
     end
+    
+    # Store total count before pagination for display
+    @total_count = recipes.count
+    
+    # Paginate results with 12 per page
+    @pagy, @recipes = pagy(recipes)
   end
 
   # GET /recipes/1 or /recipes/1.json
