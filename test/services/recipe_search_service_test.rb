@@ -61,18 +61,21 @@ class RecipeSearchServiceTest < ActiveSupport::TestCase
     cookie_score = service.send(:calculate_match_score, cookies)
     carbonara_score = service.send(:calculate_match_score, carbonara)
     
-    # Both pancakes and cookies should have 100% score (2/2 ingredients match)
-    assert_equal 100.0, pancake_score
-    assert_equal 100.0, cookie_score
+    # Both pancakes and cookies should have 46.35 score with weighted approach
+    # (recipe_efficiency^0.7 * user_coverage^0.3) * 100
+    # Pancakes/Cookies: (2/6)^0.7 * (2/2)^0.3 = 0.4635
+    assert_equal 46.35, pancake_score
+    assert_equal 46.35, cookie_score
     
-    # Carbonara should have 50% score (1/2 ingredients match)
-    assert_equal 50.0, carbonara_score
+    # Carbonara should have 26.33 score 
+    # (1/5)^0.7 * (1/2)^0.3 = 0.2633
+    assert_equal 26.33, carbonara_score
     
     # Results should be ordered by score (ties broken by whatever Rails uses for ordering)
     assert results.length > 0
-    # The first results should be the 100% matches
+    # The first results should be the highest scoring matches
     first_result_score = service.send(:calculate_match_score, results.first)
-    assert_equal 100.0, first_result_score
+    assert_equal 46.35, first_result_score
   end
 
   test "calculate_match_score returns 0 for recipe with no ingredients" do
@@ -96,18 +99,20 @@ class RecipeSearchServiceTest < ActiveSupport::TestCase
 
   test "calculate_match_score handles partial matches" do
     # Recipe has "chicken breast", user searches for "chicken"
+    # Weighted score: (1/2)^0.7 * (1/1)^0.3 = 61.56
     recipe = Recipe.new(ingredients: ["chicken breast", "rice"])
     service = RecipeSearchService.new("chicken")
     score = service.send(:calculate_match_score, recipe)
-    assert_equal 100.0, score # 1/1 user ingredients matched
+    assert_equal 61.56, score
   end
 
   test "calculate_match_score handles reverse partial matches" do
     # Recipe has "tomato", user searches for "cherry tomatoes"
+    # Weighted score: (1/2)^0.7 * (1/1)^0.3 = 61.56
     recipe = Recipe.new(ingredients: ["tomato", "basil"])
     service = RecipeSearchService.new("cherry tomatoes")
     score = service.send(:calculate_match_score, recipe)
-    assert_equal 100.0, score # 1/1 user ingredients matched
+    assert_equal 61.56, score
   end
 
   test "calculate_match_score handles mixed case" do
@@ -117,9 +122,9 @@ class RecipeSearchServiceTest < ActiveSupport::TestCase
     assert_equal 100.0, score
   end
 
-  test "calculate_match_score calculates percentage correctly" do
+  test "calculate_match_score calculates weighted score correctly" do
     # Recipe has eggs, flour, sugar. User has eggs, flour, butter.
-    # 2 out of 3 user ingredients match = 66.67%
+    # Weighted score: (2/3)^0.7 * (2/3)^0.3 = 66.67
     recipe = Recipe.new(ingredients: ["eggs", "flour", "sugar"])
     service = RecipeSearchService.new("eggs, flour, butter")
     score = service.send(:calculate_match_score, recipe)

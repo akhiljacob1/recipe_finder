@@ -25,16 +25,18 @@ class RecipeTest < ActiveSupport::TestCase
     pancakes = recipes(:pancakes)
     score = pancakes.ingredient_match_score("eggs, flour")
     
-    # Pancakes has both eggs and flour, so should be 100%
-    assert_equal 100.0, score
+    # Pancakes has both eggs and flour (6 total ingredients)
+    # Weighted score: (2/6)^0.7 * (2/2)^0.3 = 46.35
+    assert_equal 46.35, score
   end
 
   test "ingredient_match_score handles partial matches" do
     carbonara = recipes(:pasta_carbonara)
     score = carbonara.ingredient_match_score("eggs, flour")
     
-    # Carbonara has eggs but not flour, so should be 50%
-    assert_equal 50.0, score
+    # Carbonara has eggs but not flour (5 total ingredients)
+    # Weighted score: (1/5)^0.7 * (1/2)^0.3 = 26.33
+    assert_equal 26.33, score
   end
 
   test "ingredient_match_score returns 0 for no matches" do
