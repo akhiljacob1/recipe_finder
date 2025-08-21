@@ -4,6 +4,7 @@ pasta_carbonara:
   title: "Classic Pasta Carbonara"
   cook_time: 15
   prep_time: 10
+  total_time: 25
   ratings: 4.5
   category: "Italian"
   author: "Chef Mario"
@@ -14,6 +15,7 @@ chocolate_chip_cookies:
   title: "Chocolate Chip Cookies"
   cook_time: 12
   prep_time: 15
+  total_time: 27
   ratings: 4.8
   category: "Dessert"
   author: "Baker Jane"
@@ -24,6 +26,7 @@ chicken_stir_fry:
   title: "Quick Chicken Stir Fry"
   cook_time: 10
   prep_time: 15
+  total_time: 25
   ratings: 4.2
   category: "Asian"
   author: "Chef Wong"
@@ -34,6 +37,7 @@ tomato_soup:
   title: "Creamy Tomato Soup"
   cook_time: 20
   prep_time: 10
+  total_time: 30
   ratings: 4.0
   category: "Soup"
   author: "Chef Anna"
@@ -44,6 +48,7 @@ pancakes:
   title: "Fluffy Pancakes"
   cook_time: 15
   prep_time: 5
+  total_time: 20
   ratings: 4.7
   category: "Breakfast"
   author: "Mom's Recipe"
@@ -54,6 +59,7 @@ beef_tacos:
   title: "Spicy Beef Tacos"
   cook_time: 20
   prep_time: 15
+  total_time: 35
   ratings: 4.4
   category: "Mexican"
   author: "Chef Carlos"
