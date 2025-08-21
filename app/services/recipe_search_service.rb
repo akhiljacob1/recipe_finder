@@ -41,9 +41,8 @@ class RecipeSearchService
     
     # Return an ActiveRecord::Relation with the correct order
     if recipe_ids.any?
-      # Use the IDs to create a properly ordered relation
-      @results = Recipe.where(id: recipe_ids)
-                       .order(Arel.sql("position(id::text in '#{recipe_ids.join(',')}')"))
+      order_clause = "array_position(ARRAY[#{recipe_ids.join(',')}]::int[], recipes.id)"
+      @results = Recipe.where(id: recipe_ids).order(Arel.sql(order_clause))
     else
       @results = Recipe.none
     end
