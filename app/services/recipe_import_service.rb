@@ -78,7 +78,7 @@ class RecipeImportService
       ratings: recipe_data['ratings'],
       category: recipe_data['category'],
       author: recipe_data['author'],
-      image_url: recipe_data['image'],
+      image_url: extract_actual_image_url(recipe_data['image']),
       ingredients: recipe_data['ingredients']
     )
     
@@ -98,5 +98,33 @@ class RecipeImportService
     puts "Skipped (no time data): #{@skipped_count} recipes" if @skipped_count > 0
     puts "Failed imports: #{@failed_count} recipes" if @failed_count > 0
     puts "Total recipes in database: #{Recipe.count}"
+  end
+
+  def extract_actual_image_url(full_image_url)
+    return nil if full_image_url.blank?
+    
+    # Extract the actual image URL from the full URL
+    # Example: https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F50654.jpg
+    # Should become: https://images.media-allrecipes.com/userphotos/50654.jpg
+    
+    begin
+      uri = URI(full_image_url)
+      if uri.query.present?
+        # Parse the query parameters to find the 'url' parameter
+        query_params = URI.decode_www_form(uri.query)
+        url_param = query_params.find { |key, _| key == 'url' }
+        
+        if url_param
+          # Return the decoded URL parameter
+          return CGI.unescape(url_param.last)
+        end
+      end
+      
+      # If no 'url' parameter found, return the original URL
+      full_image_url
+    rescue URI::InvalidURIError
+      # If the URL is invalid, return the original
+      full_image_url
+    end
   end
 end
