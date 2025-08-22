@@ -40,7 +40,7 @@ gem "kamal", require: false
 gem "thruster", require: false
 
 gem "tailwindcss-ruby"
-gem "tailwindcss-rails", "~> 3.3.1"
+gem "tailwindcss-rails", "~> 4.3.0"
 
 # Pagination gem
 gem "pagy"
